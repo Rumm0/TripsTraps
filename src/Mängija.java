@@ -1,17 +1,15 @@
 //Selle klassi eesmärk on mängijate jaoks isendite tegemise võimalus
 
 public class Mängija {
-    public boolean Alustab;
-    public int XvõiO;
+    public char XvõiO;
     public String nimi;
-    //Kontruktor mängija jaoks, mis võtab parameetritena: Kas ta alustab, milline on tema sümbol ning nimi
-    public Mängija(boolean Alustab, int XvõiO, String nimi){
-        this.Alustab = Alustab;
+    //Kontruktor mängija jaoks, mis võtab parameetritena: milline on tema sümbol ning nimi
+    public Mängija(char XvõiO, String nimi){
         this.XvõiO = XvõiO;
         this.nimi = nimi;
     }
 
-    public int getXvõiO() {
+    public char getXvõiO() {
         return XvõiO;
     }
 
