@@ -4,14 +4,20 @@ import java.util.Scanner;
 
 public class test {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Esimene mängija:");
-        String nimi = sc.nextLine();
-        System.out.println("Teine mängija:");
-        String nimi2 = sc.nextLine();
+        String nimi = "";
+        String nimi2 = "";
+        while (nimi.equals("")){
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Esimene mängija:");
+            nimi = sc.nextLine();
+            if (nimi.equals("")) System.out.println("Vigane sisend. Proovi uuesti");}
+        while (nimi2.equals("")){
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Teine mängija:");
+            nimi2 = sc.nextLine();
+            if (nimi2.equals("")) System.out.println("Vigane sisend. Proovi uuesti");}
         ArrayList<Mängija> mängijad = Alustaja(nimi, nimi2);
         MänguLaud laud = new MänguLaud();
-
         //mainloop
         //läbi = true kui mäng lõppeb
         //esimese_käik on mängijate vahel alterneermiseks
@@ -23,6 +29,9 @@ public class test {
         System.out.println(laud.toString());
         while (!läbi) {
             käigu_nr += 1;
+                if (käigu_nr == 10) {
+                    System.out.println("Viik!");
+                    läbi = true;}
             if (esimese_käik) {
                 boolean korrektne_käik = false;
                 while (!korrektne_käik) {
@@ -43,10 +52,6 @@ public class test {
                     System.out.println("Võitja on " + mängijad.get(1).nimi);
                     läbi = true;
                 }
-            }
-            if (käigu_nr == 9) {
-                System.out.println("Viik!");
-                läbi = true;
             }
         }
     }

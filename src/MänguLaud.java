@@ -27,6 +27,7 @@ public class MänguLaud {
                     tehtud = true;
                 }
                 else {
+                    System.out.println("Sinna on juba käidud! Proovi uuesti!");
                     tehtud = true;
                     return false;
                 }
