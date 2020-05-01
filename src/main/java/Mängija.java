@@ -3,8 +3,9 @@
 public class Mängija {
     public char XvõiO;
     public String nimi;
+
     //Kontruktor mängija jaoks, mis võtab parameetritena: milline on tema sümbol ning nimi
-    public Mängija(char XvõiO, String nimi){
+    public Mängija(char XvõiO, String nimi) {
         this.XvõiO = XvõiO;
         this.nimi = nimi;
     }
