@@ -1,7 +1,6 @@
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -55,62 +54,61 @@ public class test extends Application {
             buttonList.get(i).setPrefSize(100, 100);
             buttonList.get(i).setFont(new Font(25));
         }
-            // Nuppude klikkamised
-            buttonList.get(0).setOnAction((ActionEvent event) -> {
-                if (press(1, mängijad, laud)) {
-                    buttonList.get(0).setText(String.valueOf(laud.getAktiivne().XvõiO));
-                    head.setText("Käib: " + laud.getAktiivne().getNimi());
-                }
-            });
-            buttonList.get(1).setOnAction((ActionEvent event) -> {
-                if (press(2, mängijad, laud)) {
-                    buttonList.get(1).setText(String.valueOf(laud.getAktiivne().XvõiO));
-                    head.setText("Käib: " + laud.getAktiivne().getNimi());
-                }
-            });
-            buttonList.get(2).setOnAction((ActionEvent event) -> {
-                if (press(3, mängijad, laud)) {
-                    buttonList.get(2).setText(String.valueOf(laud.getAktiivne().XvõiO));
-                    head.setText("Käib: " + laud.getAktiivne().getNimi());
-                }
-            });
-            buttonList.get(3).setOnAction((ActionEvent event) -> {
-                if (press(4, mängijad, laud)) {
-                    buttonList.get(3).setText(String.valueOf(laud.getAktiivne().XvõiO));
-                    head.setText("Käib: " + laud.getAktiivne().getNimi());
-                }
-            });
-            buttonList.get(4).setOnAction((ActionEvent event) -> {
-                if (press(5, mängijad, laud)) {
-                    buttonList.get(4).setText(String.valueOf(laud.getAktiivne().XvõiO));
-                    head.setText("Käib: " + laud.getAktiivne().getNimi());
-                }
-            });
-            buttonList.get(5).setOnAction((ActionEvent event) -> {
-                if (press(6, mängijad, laud)) {
-                    buttonList.get(5).setText(String.valueOf(laud.getAktiivne().XvõiO));
-                    head.setText("Käib: " + laud.getAktiivne().getNimi());
-                }
-            });
-            buttonList.get(6).setOnAction((ActionEvent event) -> {
-                if (press(7, mängijad, laud)) {
-                    buttonList.get(6).setText(String.valueOf(laud.getAktiivne().XvõiO));
-                    head.setText("Käib: " + laud.getAktiivne().getNimi());
-                }
-            });
-            buttonList.get(7).setOnAction((ActionEvent event) -> {
-                if (press(8, mängijad, laud)) {
-                    buttonList.get(7).setText(String.valueOf(laud.getAktiivne().XvõiO));
-                    head.setText("Käib: " + laud.getAktiivne().getNimi());
-                }
-            });
-            buttonList.get(8).setOnAction((ActionEvent event) -> {
-                        if (press(9, mängijad, laud)) {
-                            buttonList.get(8).setText(String.valueOf(laud.getAktiivne().XvõiO));
-                            head.setText("Käib: " + laud.getAktiivne().getNimi());
-                        }
-                    });
-
+        // Nuppude klikkamised
+        buttonList.get(0).setOnAction((ActionEvent event) -> {
+            if (press(1, mängijad, laud)) {
+                buttonList.get(0).setText(String.valueOf(laud.getAktiivne().XvõiO));
+                head.setText("Käib: " + laud.getAktiivne().getNimi());
+            }
+        });
+        buttonList.get(1).setOnAction((ActionEvent event) -> {
+            if (press(2, mängijad, laud)) {
+                buttonList.get(1).setText(String.valueOf(laud.getAktiivne().XvõiO));
+                head.setText("Käib: " + laud.getAktiivne().getNimi());
+            }
+        });
+        buttonList.get(2).setOnAction((ActionEvent event) -> {
+            if (press(3, mängijad, laud)) {
+                buttonList.get(2).setText(String.valueOf(laud.getAktiivne().XvõiO));
+                head.setText("Käib: " + laud.getAktiivne().getNimi());
+            }
+        });
+        buttonList.get(3).setOnAction((ActionEvent event) -> {
+            if (press(4, mängijad, laud)) {
+                buttonList.get(3).setText(String.valueOf(laud.getAktiivne().XvõiO));
+                head.setText("Käib: " + laud.getAktiivne().getNimi());
+            }
+        });
+        buttonList.get(4).setOnAction((ActionEvent event) -> {
+            if (press(5, mängijad, laud)) {
+                buttonList.get(4).setText(String.valueOf(laud.getAktiivne().XvõiO));
+                head.setText("Käib: " + laud.getAktiivne().getNimi());
+            }
+        });
+        buttonList.get(5).setOnAction((ActionEvent event) -> {
+            if (press(6, mängijad, laud)) {
+                buttonList.get(5).setText(String.valueOf(laud.getAktiivne().XvõiO));
+                head.setText("Käib: " + laud.getAktiivne().getNimi());
+            }
+        });
+        buttonList.get(6).setOnAction((ActionEvent event) -> {
+            if (press(7, mängijad, laud)) {
+                buttonList.get(6).setText(String.valueOf(laud.getAktiivne().XvõiO));
+                head.setText("Käib: " + laud.getAktiivne().getNimi());
+            }
+        });
+        buttonList.get(7).setOnAction((ActionEvent event) -> {
+            if (press(8, mängijad, laud)) {
+                buttonList.get(7).setText(String.valueOf(laud.getAktiivne().XvõiO));
+                head.setText("Käib: " + laud.getAktiivne().getNimi());
+            }
+        });
+        buttonList.get(8).setOnAction((ActionEvent event) -> {
+            if (press(9, mängijad, laud)) {
+                buttonList.get(8).setText(String.valueOf(laud.getAktiivne().XvõiO));
+                head.setText("Käib: " + laud.getAktiivne().getNimi());
+            }
+        });
         // Nuppude ruudustikku paigutamine
         for (int i = 0; i < 9; i++) {
             GridPane.setConstraints(buttonList.get(i), (i % 3), (i / 3));
@@ -139,11 +137,10 @@ public class test extends Application {
         peaLava.setScene(stseen);  // lavale lisatakse stseen
         peaLava.show();  // lava tehakse nähtavaks
     }
-    @FXML
-    private Label label;
+
+
     private boolean võit() {
         Button uuesti = new Button("Alusta uut mängu");
-        if (uuesti.isPressed()) return false;
         Button lõpeta = new Button("Lõpeta mängimine");
         uuesti.setPrefSize(100, 20);
         lõpeta.setPrefSize(100, 20);
@@ -165,12 +162,11 @@ public class test extends Application {
         newWindow.setTitle("Second Stage");
         newWindow.setScene(secondScene);
 
-        // Set position of second window, related to primary window
-
         newWindow.show();
         return true;
     }
     // Meetod, mida käivitab nupuvajutus
+
 
     boolean press(int nr, ArrayList<Mängija> mängijad, MänguLaud laud) {
         if (MänguLaud.käik(laud, laud.getAktiivne(), nr)) {
