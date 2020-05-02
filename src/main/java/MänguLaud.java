@@ -32,15 +32,6 @@ public class MänguLaud {
             return false;
         }
     }
-
-    @Override
-    public String toString() {
-        return ((laud[0][0]) + "|" + (laud[0][1]) + "|" + (laud[0][2]) + "\n" +
-                "-".repeat(5) + "\n" +
-                (laud[1][0]) + "|" + (laud[1][1]) + "|" + (laud[1][2]) + "\n" +
-                "-".repeat(5) + "\n" +
-                (laud[2][0]) + "|" + (laud[2][1]) + "|" + (laud[2][2]));
-    }
 }
 
 
