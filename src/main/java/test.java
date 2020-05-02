@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.swing.*;
@@ -60,11 +61,17 @@ public class test extends Application {
                 buttonList.get(0).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
             }
+            else {
+                if (!võit()) start(peaLava);
+            }
         });
         buttonList.get(1).setOnAction((ActionEvent event) -> {
             if (press(2, mängijad, laud)) {
                 buttonList.get(1).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
+            }
+            else {
+                if (!võit()) start(peaLava);
             }
         });
         buttonList.get(2).setOnAction((ActionEvent event) -> {
@@ -72,11 +79,17 @@ public class test extends Application {
                 buttonList.get(2).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
             }
+            else {
+                if (!võit()) start(peaLava);
+            }
         });
         buttonList.get(3).setOnAction((ActionEvent event) -> {
             if (press(4, mängijad, laud)) {
                 buttonList.get(3).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
+            }
+            else {
+                if (!võit()) start(peaLava);
             }
         });
         buttonList.get(4).setOnAction((ActionEvent event) -> {
@@ -84,11 +97,17 @@ public class test extends Application {
                 buttonList.get(4).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
             }
+            else {
+                if (!võit()) start(peaLava);
+            }
         });
         buttonList.get(5).setOnAction((ActionEvent event) -> {
             if (press(6, mängijad, laud)) {
                 buttonList.get(5).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
+            }
+            else {
+                if (!võit()) start(peaLava);
             }
         });
         buttonList.get(6).setOnAction((ActionEvent event) -> {
@@ -96,17 +115,26 @@ public class test extends Application {
                 buttonList.get(6).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
             }
+            else {
+                if (!võit()) start(peaLava);
+            }
         });
         buttonList.get(7).setOnAction((ActionEvent event) -> {
             if (press(8, mängijad, laud)) {
                 buttonList.get(7).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
+            }else {
+                if (!võit()) start(peaLava);
             }
+
         });
         buttonList.get(8).setOnAction((ActionEvent event) -> {
             if (press(9, mängijad, laud)) {
                 buttonList.get(8).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
+            }
+            else {
+                if (!võit()) start(peaLava);
             }
         });
         // Nuppude ruudustikku paigutamine
@@ -136,28 +164,35 @@ public class test extends Application {
         peaLava.setTitle("Must ruut");  // lava tiitelribale pannakse tekst
         peaLava.setScene(stseen);  // lavale lisatakse stseen
         peaLava.show();  // lava tehakse nähtavaks
+        this.lava = peaLava;
+        this.laud = laud;
     }
-
+    private Stage lava;
+    private MänguLaud laud;
 
     private boolean võit() {
+        Text võitja = new Text("Võitis " + laud.getAktiivne().getNimi());
         Button uuesti = new Button("Alusta uut mängu");
         Button lõpeta = new Button("Lõpeta mängimine");
         uuesti.setPrefSize(100, 20);
+        uuesti.setOnAction(event -> start(lava));
+        lõpeta.setOnAction(event -> Platform.exit());
         lõpeta.setPrefSize(100, 20);
-        HBox hbox = new HBox();
-        hbox.setPadding(new Insets(15, 12, 15, 12));
-        hbox.setSpacing(10);
-        hbox.setStyle("-fx-background-color: #336699;");
-        hbox.getChildren().addAll(uuesti, lõpeta);
-        BorderPane.setAlignment(hbox, Pos.BOTTOM_CENTER);
-        BorderPane secondaryLayout = new BorderPane();
+        HBox valikud = new HBox();
+        valikud.setPadding(new Insets(15, 12, 15, 12));
+        valikud.setSpacing(10);
+        valikud.setStyle("-fx-background-color: #336699;");
+        valikud.getChildren().addAll(uuesti, lõpeta);
+        BorderPane.setAlignment(võitja, Pos.CENTER);
+        BorderPane.setAlignment(valikud, Pos.BOTTOM_CENTER);
+        BorderPane Mängulõpp = new BorderPane();
+        Mängulõpp.setBottom(valikud);
+        Mängulõpp.setCenter(võitja);
 
-        secondaryLayout.setBottom(hbox);
 
+        Scene secondScene = new Scene(Mängulõpp, 250, 250);
 
-        Scene secondScene = new Scene(secondaryLayout, 250, 250);
-
-        // New window (Stage)
+        // New window (Stage)t
         Stage newWindow = new Stage();
         newWindow.setTitle("Second Stage");
         newWindow.setScene(secondScene);
@@ -172,12 +207,8 @@ public class test extends Application {
         if (MänguLaud.käik(laud, laud.getAktiivne(), nr)) {
             //buttonString = String.valueOf(laud.getLaud()[((nr - 1) / 3)][(nr - 1) % 3]);
                 if (kontroll(laud)){
-                    võit();
+                    return false;
                 }
-            }
-            if (viigiKontroll(laud)) {
-                //////////////////// viik /////////////////////////////////
-                Platform.exit();
             }
             aktiivneSwap(mängijad, laud);
             return true;
