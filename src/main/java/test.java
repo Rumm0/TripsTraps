@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -15,7 +16,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.swing.*;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class test extends Application {
     @Override
@@ -55,76 +60,61 @@ public class test extends Application {
             buttonList.get(i).setPrefSize(100, 100);
             buttonList.get(i).setFont(new Font(25));
         }
+
         // Nuppude klikkamised
         buttonList.get(0).setOnAction((ActionEvent event) -> {
             if (press(1, mängijad, laud)) {
                 buttonList.get(0).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
             }
-            else {
-                if (!võit()) start(peaLava);
-            }
+
         });
         buttonList.get(1).setOnAction((ActionEvent event) -> {
             if (press(2, mängijad, laud)) {
                 buttonList.get(1).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
             }
-            else {
-                if (!võit()) start(peaLava);
-            }
+
         });
         buttonList.get(2).setOnAction((ActionEvent event) -> {
             if (press(3, mängijad, laud)) {
                 buttonList.get(2).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
             }
-            else {
-                if (!võit()) start(peaLava);
-            }
+
         });
         buttonList.get(3).setOnAction((ActionEvent event) -> {
             if (press(4, mängijad, laud)) {
                 buttonList.get(3).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
             }
-            else {
-                if (!võit()) start(peaLava);
-            }
+
         });
         buttonList.get(4).setOnAction((ActionEvent event) -> {
             if (press(5, mängijad, laud)) {
                 buttonList.get(4).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
             }
-            else {
-                if (!võit()) start(peaLava);
-            }
+
         });
         buttonList.get(5).setOnAction((ActionEvent event) -> {
             if (press(6, mängijad, laud)) {
                 buttonList.get(5).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
             }
-            else {
-                if (!võit()) start(peaLava);
-            }
+
         });
         buttonList.get(6).setOnAction((ActionEvent event) -> {
             if (press(7, mängijad, laud)) {
                 buttonList.get(6).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
             }
-            else {
-                if (!võit()) start(peaLava);
-            }
+
         });
         buttonList.get(7).setOnAction((ActionEvent event) -> {
             if (press(8, mängijad, laud)) {
                 buttonList.get(7).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
-            }else {
-                if (!võit()) start(peaLava);
             }
 
         });
@@ -132,9 +122,6 @@ public class test extends Application {
             if (press(9, mängijad, laud)) {
                 buttonList.get(8).setText(String.valueOf(laud.getAktiivne().XvõiO));
                 head.setText("Käib: " + laud.getAktiivne().getNimi());
-            }
-            else {
-                if (!võit()) start(peaLava);
             }
         });
         // Nuppude ruudustikku paigutamine
@@ -165,19 +152,18 @@ public class test extends Application {
         peaLava.setScene(stseen);  // lavale lisatakse stseen
         peaLava.show();  // lava tehakse nähtavaks
         this.lava = peaLava;
-        this.laud = laud;
+
     }
     private Stage lava;
-    private MänguLaud laud;
 
-    private boolean võit() {
-        Text võitja = new Text("Võitis " + laud.getAktiivne().getNimi());
+    // Meetod avab uue akna, mis võtab parameetriks võitja ja annab valiku, kas teha uus mäng, lõpetada või näidata ajalugu
+    private void võit(Text võitja) {
         Button uuesti = new Button("Alusta uut mängu");
         Button lõpeta = new Button("Lõpeta mängimine");
-        uuesti.setPrefSize(100, 20);
-        uuesti.setOnAction(event -> start(lava));
-        lõpeta.setOnAction(event -> Platform.exit());
-        lõpeta.setPrefSize(100, 20);
+        Button ajalugu = new Button("Ajalugu");
+        uuesti.setPrefSize(150, 20);
+        lõpeta.setPrefSize(150, 20);
+        ajalugu.setPrefSize(150,20);
         HBox valikud = new HBox();
         valikud.setPadding(new Insets(15, 12, 15, 12));
         valikud.setSpacing(10);
@@ -185,34 +171,57 @@ public class test extends Application {
         valikud.getChildren().addAll(uuesti, lõpeta);
         BorderPane.setAlignment(võitja, Pos.CENTER);
         BorderPane.setAlignment(valikud, Pos.BOTTOM_CENTER);
+        BorderPane.setAlignment(ajalugu, Pos.TOP_CENTER);
         BorderPane Mängulõpp = new BorderPane();
         Mängulõpp.setBottom(valikud);
         Mängulõpp.setCenter(võitja);
+        Mängulõpp.setTop(ajalugu);
+        Scene TeineStseen = new Scene(Mängulõpp, 300, 300);
+        Stage MängLäbi = new Stage();
+        MängLäbi.setTitle("Second Stage");
+        MängLäbi.setScene(TeineStseen);
+
+        MängLäbi.show();
+
+        uuesti.setOnAction(event -> {
+            MängLäbi.close();
+            start(lava);
+        });
+
+        //Vajutades lõpeta, lõpetab programm töö
+        lõpeta.setOnAction(event -> Platform.exit());
+        //Ajalugu peaks näitama mängijate nimesid ja mitu korda nad võitnud on, kuid mul ei õnnestunud
+        //Mapi'st infot tableview'sse saada.
+        ajalugu.setOnAction(event -> {
+            TableView<String> tableView = new TableView<>();
+            try {
+                Map<String, Integer> tulemused = ajalugu(loeFailist());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            VBox vbox = new VBox(tableView);
+            Scene scene = new Scene(vbox);
+            lava.setScene(scene);
+            lava.show();});
+        }
 
 
-        Scene secondScene = new Scene(Mängulõpp, 250, 250);
-
-        // New window (Stage)t
-        Stage newWindow = new Stage();
-        newWindow.setTitle("Second Stage");
-        newWindow.setScene(secondScene);
-
-        newWindow.show();
-        return true;
-    }
     // Meetod, mida käivitab nupuvajutus
-
 
     boolean press(int nr, ArrayList<Mängija> mängijad, MänguLaud laud) {
         if (MänguLaud.käik(laud, laud.getAktiivne(), nr)) {
-            //buttonString = String.valueOf(laud.getLaud()[((nr - 1) / 3)][(nr - 1) % 3]);
-                if (kontroll(laud)){
-                    return false;
-                }
-            }
             aktiivneSwap(mängijad, laud);
-            return true;
+            if (viigiKontroll(laud)) {
+                võit(new Text("Viik"));
+                return true;
+            } else if (kontroll(laud)) {
+                võit(new Text("Võitja on:" + laud.getAktiivne().getNimi()));
+                kirjuta(laud.getAktiivne().getNimi());
+                return true;
+            }
+            else { return true;}
         }
+    return false; }
 
     // Meetod kontrollib kas mäng on lõppenud viigiga
     boolean viigiKontroll(MänguLaud laud) {
@@ -268,6 +277,45 @@ public class test extends Application {
         } else {
             laud.setAktiivne(list.get(0));
         }
+    }
+    // meetod loeb logi failist informatsiooni listi
+    private static List<String> loeFailist() throws FileNotFoundException {
+        InputStream s = null;
+        s = new FileInputStream("app.log");
+        List<String> võitjad = new ArrayList<>();
+        try (BufferedReader bf = new BufferedReader(new InputStreamReader(s, "UTF-8"))) {
+            while (bf.ready()) {
+                võitjad.add(bf.readLine());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return võitjad;
+    }
+    // meetod teeb logi faili listist mapi, kus võtmeks on mängija nimi ja väärtuseks tema võitude arv
+    private static Map<String, Integer> ajalugu(List<String> võitjad){
+
+            Map<String, Integer> ajalugu = new HashMap<>();
+            for (String nimi : võitjad) {
+                if (ajalugu.containsKey(nimi)) {
+                    ajalugu.put(nimi, ajalugu.get(nimi) + 1);
+                } else {
+                    ajalugu.put(nimi, 1);
+                }
+            }
+            return ajalugu;
+        }
+        // Meetod kirjutab võidu korral võitja nime logi faili
+        private void kirjuta(String tekst) {
+            try (FileWriter writer = new FileWriter("app.log", true);
+                 BufferedWriter bw = new BufferedWriter(writer)) {
+                bw.write(tekst);
+                bw.newLine();
+
+            } catch (IOException e) {
+                System.err.format("IOException: %s%n", e);
+            }
     }
 
 }
