@@ -1,5 +1,8 @@
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -8,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -154,6 +158,7 @@ public class test extends Application {
         this.lava = peaLava;
 
     }
+
     private Stage lava;
 
     // Meetod avab uue akna, mis võtab parameetriks võitja ja annab valiku, kas teha uus mäng, lõpetada või näidata ajalugu
@@ -163,7 +168,7 @@ public class test extends Application {
         Button ajalugu = new Button("Ajalugu");
         uuesti.setPrefSize(150, 20);
         lõpeta.setPrefSize(150, 20);
-        ajalugu.setPrefSize(150,20);
+        ajalugu.setPrefSize(150, 20);
         HBox valikud = new HBox();
         valikud.setPadding(new Insets(15, 12, 15, 12));
         valikud.setSpacing(10);
@@ -193,35 +198,66 @@ public class test extends Application {
         //Ajalugu peaks näitama mängijate nimesid ja mitu korda nad võitnud on, kuid mul ei õnnestunud
         //Mapi'st infot tableview'sse saada.
         ajalugu.setOnAction(event -> {
-            TableView<String> tableView = new TableView<>();
+            Map<String, String> tulemused = new HashMap<>();
+            tulemused.put("Fail", "Puudu");
             try {
-                Map<String, Integer> tulemused = ajalugu(loeFailist());
+                tulemused = ajalugu(loeFailist());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            VBox vbox = new VBox(tableView);
+///////////////////////////////////////////////////////////////////////////////
+            //https://stackoverflow.com/questions/18618653/binding-hashmap-with-tableview-javafx
+            //Teeb Mapist TableView
+            //////////////////////////////////////////////////
+            // use fully detailed type for Map.Entry<String, String>
+            TableColumn<Map.Entry<String, String>, String> column1 = new TableColumn<>("Nimi");
+            column1.setCellValueFactory(p -> {
+                // this callback returns property for just one cell, you can't use a loop here
+                // for first column we use key
+                return new SimpleStringProperty(p.getValue().getKey());
+            });
+
+            TableColumn<Map.Entry<String, String>, String> column2 = new TableColumn<>("Võite");
+            column2.setCellValueFactory(p -> {
+                // for second column we use value
+                return new SimpleStringProperty(p.getValue().getValue());
+            });
+
+            ObservableList<Map.Entry<String, String>> items = FXCollections.observableArrayList(tulemused.entrySet());
+            final TableView<Map.Entry<String, String>> table = new TableView<>(items);
+
+            table.getColumns().setAll(column1, column2);
+/////////////////////////////////////////////////////////////////////////////
+            VBox vbox = new VBox(table);
             Scene scene = new Scene(vbox);
             lava.setScene(scene);
-            lava.show();});
-        }
+            lava.show();
+        });
+    }
 
 
     // Meetod, mida käivitab nupuvajutus
 
     boolean press(int nr, ArrayList<Mängija> mängijad, MänguLaud laud) {
         if (MänguLaud.käik(laud, laud.getAktiivne(), nr)) {
-            aktiivneSwap(mängijad, laud);
+
             if (viigiKontroll(laud)) {
                 võit(new Text("Viik"));
+                aktiivneSwap(mängijad, laud);
                 return true;
             } else if (kontroll(laud)) {
-                võit(new Text("Võitja on:" + laud.getAktiivne().getNimi()));
+                võit(new Text("Võitja on: " + laud.getAktiivne().getNimi()));
                 kirjuta(laud.getAktiivne().getNimi());
+                aktiivneSwap(mängijad, laud);
+                return true;
+            } else {
+                aktiivneSwap(mängijad, laud);
                 return true;
             }
-            else { return true;}
+
         }
-    return false; }
+        return false;
+    }
 
     // Meetod kontrollib kas mäng on lõppenud viigiga
     boolean viigiKontroll(MänguLaud laud) {
@@ -278,44 +314,47 @@ public class test extends Application {
             laud.setAktiivne(list.get(0));
         }
     }
+
     // meetod loeb logi failist informatsiooni listi
     private static List<String> loeFailist() throws FileNotFoundException {
-        InputStream s = null;
+        InputStream s;
         s = new FileInputStream("app.log");
         List<String> võitjad = new ArrayList<>();
         try (BufferedReader bf = new BufferedReader(new InputStreamReader(s, "UTF-8"))) {
             while (bf.ready()) {
                 võitjad.add(bf.readLine());
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
         return võitjad;
     }
+
     // meetod teeb logi faili listist mapi, kus võtmeks on mängija nimi ja väärtuseks tema võitude arv
-    private static Map<String, Integer> ajalugu(List<String> võitjad){
+    private static Map<String, String> ajalugu(List<String> võitjad) {
 
-            Map<String, Integer> ajalugu = new HashMap<>();
-            for (String nimi : võitjad) {
-                if (ajalugu.containsKey(nimi)) {
-                    ajalugu.put(nimi, ajalugu.get(nimi) + 1);
-                } else {
-                    ajalugu.put(nimi, 1);
-                }
+        Map<String, String> ajalugu = new HashMap<>();
+        for (String nimi : võitjad) {
+            System.out.println(nimi);
+            if (ajalugu.containsKey(nimi)) {
+                ajalugu.put(nimi, Integer.toString(Integer.parseInt(ajalugu.get(nimi)) + 1));
+            } else {
+                ajalugu.put(nimi, Integer.toString(1));
             }
-            return ajalugu;
         }
-        // Meetod kirjutab võidu korral võitja nime logi faili
-        private void kirjuta(String tekst) {
-            try (FileWriter writer = new FileWriter("app.log", true);
-                 BufferedWriter bw = new BufferedWriter(writer)) {
-                bw.write(tekst);
-                bw.newLine();
+        return ajalugu;
+    }
 
-            } catch (IOException e) {
-                System.err.format("IOException: %s%n", e);
-            }
+    // Meetod kirjutab võidu korral võitja nime logi faili
+    private void kirjuta(String tekst) {
+        try (FileWriter writer = new FileWriter("app.log", true);
+             BufferedWriter bw = new BufferedWriter(writer)) {
+            bw.write(tekst);
+            bw.newLine();
+
+        } catch (IOException e) {
+            System.err.format("IOException: %s%n", e);
+        }
     }
 
 }
