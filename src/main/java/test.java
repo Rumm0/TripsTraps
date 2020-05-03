@@ -52,6 +52,9 @@ public class test extends Application {
 
         Label head = new Label("Käib: " + laud.getAktiivne().getNimi());
         head.setFont(new Font(30));
+        /*Button ajalugu = new Button("Ajalugu");
+        ajalugu.setPrefSize(150, 20);
+        */
 
         GridPane g1 = new GridPane();
         g1.setHgap(10);
@@ -66,6 +69,12 @@ public class test extends Application {
         }
 
         // Nuppude klikkamised
+
+        /*ajalugu.setOnAction(event -> {
+            ajalugu();
+            start(peaLava);
+        });*/
+
         buttonList.get(0).setOnAction((ActionEvent event) -> {
             if (press(1, mängijad, laud)) {
                 buttonList.get(0).setText(String.valueOf(laud.getAktiivne().XvõiO));
@@ -139,7 +148,7 @@ public class test extends Application {
         FlowPane flow = new FlowPane(Orientation.VERTICAL, 10, 10);
         flow.setColumnHalignment(HPos.CENTER);
         flow.setPadding(new Insets(20));
-        flow.getChildren().addAll(head, g1);
+        flow.getChildren().addAll(head, g1/*, ajalugu*/);
 
         VBox vBox = new VBox(10);
         vBox.setAlignment(Pos.CENTER);
@@ -195,49 +204,51 @@ public class test extends Application {
 
         //Vajutades lõpeta, lõpetab programm töö
         lõpeta.setOnAction(event -> Platform.exit());
-        //Ajalugu peaks näitama mängijate nimesid ja mitu korda nad võitnud on, kuid mul ei õnnestunud
-        //Mapi'st infot tableview'sse saada.
-        ajalugu.setOnAction(event -> {
-            Map<String, String> tulemused = new HashMap<>();
-            tulemused.put("Fail", "Puudu");
-            try {
-                tulemused = ajalugu(loeFailist());
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+        //Ajalugu näitab mängijate nimesid ja mitu korda nad võitnud on
+        ajalugu.setOnAction(event -> ajalugu());
+    }
+
+    private void ajalugu() {
+
+        Map<String, String> tulemused = new HashMap<>();
+        tulemused.put("Fail", "Puudu");
+        try {
+            tulemused = ajalugu(loeFailist());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 ///////////////////////////////////////////////////////////////////////////////
-            //https://stackoverflow.com/questions/18618653/binding-hashmap-with-tableview-javafx
-            //Teeb Mapist TableView
-            //////////////////////////////////////////////////
-            // use fully detailed type for Map.Entry<String, String>
-            TableColumn<Map.Entry<String, String>, String> column1 = new TableColumn<>("Nimi");
-            column1.setCellValueFactory(p -> {
-                // this callback returns property for just one cell, you can't use a loop here
-                // for first column we use key
-                return new SimpleStringProperty(p.getValue().getKey());
-            });
-
-            TableColumn<Map.Entry<String, String>, String> column2 = new TableColumn<>("Võite");
-            column2.setCellValueFactory(p -> {
-                // for second column we use value
-                return new SimpleStringProperty(p.getValue().getValue());
-            });
-
-            ObservableList<Map.Entry<String, String>> items = FXCollections.observableArrayList(tulemused.entrySet());
-            final TableView<Map.Entry<String, String>> table = new TableView<>(items);
-
-            table.getColumns().setAll(column1, column2);
-/////////////////////////////////////////////////////////////////////////////
-            VBox vbox = new VBox(table);
-            Scene scene = new Scene(vbox);
-            lava.setScene(scene);
-            lava.show();
+        //https://stackoverflow.com/questions/18618653/binding-hashmap-with-tableview-javafx
+        //Teeb Mapist TableView
+        //////////////////////////////////////////////////
+        // use fully detailed type for Map.Entry<String, String>
+        TableColumn<Map.Entry<String, String>, String> column1 = new TableColumn<>("Nimi");
+        column1.setCellValueFactory(p -> {
+            // this callback returns property for just one cell, you can't use a loop here
+            // for first column we use key
+            return new SimpleStringProperty(p.getValue().getKey());
         });
+
+        TableColumn<Map.Entry<String, String>, String> column2 = new TableColumn<>("Võite");
+        column2.setCellValueFactory(p -> {
+            // for second column we use value
+            return new SimpleStringProperty(p.getValue().getValue());
+        });
+
+        ObservableList<Map.Entry<String, String>> items = FXCollections.observableArrayList(tulemused.entrySet());
+        final TableView<Map.Entry<String, String>> table = new TableView<>(items);
+
+        table.getColumns().setAll(column1, column2);
+/////////////////////////////////////////////////////////////////////////////
+        VBox vbox = new VBox(table);
+        Scene scene = new Scene(vbox);
+        lava.setScene(scene);
+        lava.show();
+
     }
 
 
     // Meetod, mida käivitab nupuvajutus
-
     boolean press(int nr, ArrayList<Mängija> mängijad, MänguLaud laud) {
         if (MänguLaud.käik(laud, laud.getAktiivne(), nr)) {
 
@@ -335,7 +346,6 @@ public class test extends Application {
 
         Map<String, String> ajalugu = new HashMap<>();
         for (String nimi : võitjad) {
-            System.out.println(nimi);
             if (ajalugu.containsKey(nimi)) {
                 ajalugu.put(nimi, Integer.toString(Integer.parseInt(ajalugu.get(nimi)) + 1));
             } else {
